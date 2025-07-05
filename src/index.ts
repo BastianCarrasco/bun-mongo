@@ -1,48 +1,42 @@
-// src/index.ts
 import { Elysia } from "elysia";
-import { swagger } from "@elysiajs/swagger";
-import { config } from "./config";
-import connectDB from "./db";
-import { preguntaRoutes } from "./routes"; // Importa las rutas de pregunta
+import { swagger } from "@elysiajs/swagger"; // Importa el plugin de Swagger
+import { connectDB } from "../src/db/db";
+import { preguntaRoutes } from "./routes/pregunta.routes";
 
 const app = new Elysia();
 
-// Conecta a la base de datos al iniciar
+// Conectar a la base de datos al iniciar la aplicación
 connectDB();
 
-app
-  .use(
-    swagger({
-      path: "/docs",
-      documentation: {
-        info: {
-          title: "API de Formularios y Preguntas",
-          version: "1.0.0",
-          description:
-            "API RESTful para gestionar preguntas y respuestas de formularios.",
-        },
-        tags: [
-          {
-            name: "Usuarios",
-            description: "Operaciones relacionadas con usuarios",
-          },
-          {
-            name: "Preguntas",
-            description: "Operaciones relacionadas con preguntas y respuestas",
-          }, // Añade este tag
-        ],
+// Configurar Swagger/OpenAPI
+app.use(
+  swagger({
+    path: "/swagger", // La URL donde estará disponible la UI de Swagger
+    documentation: {
+      info: {
+        title: "API de Preguntas del Formulario",
+        version: "1.0.0",
+        description: "API para gestionar preguntas de formularios MongoDB.",
       },
-    })
-  )
-  .get("/", () => "Bienvenido a mi API con Elysia!")
-  // Registra tus módulos de rutas
+      tags: [
+        {
+          name: "Preguntas",
+          description: "Operaciones relacionadas con preguntas",
+        },
+      ],
+    },
+  })
+);
 
-  .use(preguntaRoutes) // ¡REGISTRA TUS RUTAS DE PREGUNTAS AQUÍ!
-  .listen(config.PORT, () => {
-    console.log(
-      `🦊 Elysia está corriendo en http://${app.server?.hostname}:${config.PORT}`
-    );
-    console.log(
-      `📚 Documentación Swagger UI en http://${app.server?.hostname}:${config.PORT}/docs`
-    );
-  });
+// Ruta de bienvenida general
+app.get("/", () => "¡Bienvenido a tu API de Preguntas con Bun!");
+
+// Modulariza tus rutas
+app.use(preguntaRoutes);
+
+app.listen(3000, () => {
+  console.log("Servidor Bun corriendo en http://localhost:3000");
+  console.log(
+    "Documentación Swagger disponible en http://localhost:3000/swagger"
+  );
+});
