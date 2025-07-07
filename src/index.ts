@@ -1,17 +1,20 @@
 import { Elysia } from "elysia";
-import { swagger } from "@elysiajs/swagger"; // Importa el plugin de Swagger
+import { swagger } from "@elysiajs/swagger";
 import { connectDB } from "../src/db/db";
-import { preguntaRoutes } from "./routes/pregunta.routes";
+
+import { preguntaPruebaRoutes } from "./routes/preguntasPrueba.routes";
+import { cors } from "@elysiajs/cors";
 
 const app = new Elysia();
 
 // Conectar a la base de datos al iniciar la aplicación
 connectDB();
+app.use(cors());
 
 // Configurar Swagger/OpenAPI
 app.use(
   swagger({
-    path: "/swagger", // La URL donde estará disponible la UI de Swagger
+    path: "/swagger",
     documentation: {
       info: {
         title: "API de Preguntas del Formulario",
@@ -32,7 +35,8 @@ app.use(
 app.get("/", () => "¡Bienvenido a tu API de Preguntas con Bun!");
 
 // Modulariza tus rutas
-app.use(preguntaRoutes);
+
+app.use(preguntaPruebaRoutes);
 
 app.listen(3000, () => {
   console.log("Servidor Bun corriendo en http://localhost:3000");
