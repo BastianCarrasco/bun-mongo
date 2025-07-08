@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const mongoURI =
   "mongodb://mongo:UPwxPyeWplkCSPGnodXDLCcTpdrPuZoI@gondola.proxy.rlwy.net:43414";
-const dbName = "FORMULARIOS"; // Revertimos a FORMULARIO como la base de datos principal
+const dbName = "OPENFIN"; // Revertimos a FORMULARIO como la base de datos principal
 
 export async function connectDB() {
   try {
