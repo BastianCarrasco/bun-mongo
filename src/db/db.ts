@@ -6,6 +6,7 @@ const mongoURI: string =
 const dbName: string = process.env.DB_NAME || "default_db_name";
 
 export async function connectDB() {
+
   try {
     console.log(`Intentando conectar a MongoDB en: ${mongoURI}`);
     console.log(`Usando la base de datos: ${dbName}`);

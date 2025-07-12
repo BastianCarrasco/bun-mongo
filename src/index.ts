@@ -3,6 +3,7 @@ import { swagger } from "@elysiajs/swagger";
 import { connectDB } from "../src/db/db";
 import inscripcionesEmpresasRoutes from "./routes/empresas.routes.js";
 import inscripcionesAcademicosRoutes from "./routes/academicos.routes.js";
+import inscripcionesDesafiosRoutes from "./routes/desafios.routes.js";
 import { cors } from "@elysiajs/cors";
 
 const app = new Elysia();
@@ -34,8 +35,8 @@ app.use(
             "Operaciones relacionadas con la inscripción de investigadores y académicos.",
         }, // ¡NUEVO TAG!
         {
-          name: "Preguntas",
-          description: "Operaciones de prueba para preguntas de formularios.",
+          name: "Desafíos",
+          description: "Operaciones relacionadas con la inscripción de desafíos.",
         },
       ],
     },
@@ -51,6 +52,7 @@ app.use(
 
     .use(inscripcionesEmpresasRoutes) // Monta las rutas de empresas (serán /api/empresas/...)
     .use(inscripcionesAcademicosRoutes)
+    .use(inscripcionesDesafiosRoutes)
 );
 // --- FIN MODULARIZACIÓN ---
 
