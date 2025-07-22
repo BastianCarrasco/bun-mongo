@@ -29,8 +29,6 @@ const DesafioInscripcionSchema = new mongoose.Schema(
         "El correo electrónico no puede exceder los 100 caracteres.",
       ],
     },
-    // Ahora 'unidadAcademica' contendrá el nombre real de la unidad,
-    // ya sea una de las predefinidas o la que el usuario escribió en "Otra..."
     unidadAcademica: {
       type: String,
       required: [true, "La unidad académica es obligatoria."],
@@ -40,7 +38,6 @@ const DesafioInscripcionSchema = new mongoose.Schema(
         "La unidad académica no puede exceder los 100 caracteres.",
       ],
     },
-    // campo 'otraUnidad' ha sido ELIMINADO de este esquema
     desafioInteres: {
       type: [String], // <--- AHORA ES UN ARRAY DE STRINGS
       required: [true, "Debe seleccionar al menos un desafío."],
@@ -69,9 +66,6 @@ const DesafioInscripcionSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
-
-// ¡IMPORTANTE! ELIMINAMOS el middleware pre('validate') relacionado con 'otraUnidad'
-// ya que ya no es un campo en el esquema ni necesitamos esa validación condicional aquí.
 
 const DesafioInscripcion =
   mongoose.models.DesafioInscripcion ||
