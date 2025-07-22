@@ -6,14 +6,12 @@ const DesafioInscripcionSchema = new mongoose.Schema(
       type: String,
       required: [true, "El nombre es obligatorio."],
       trim: true,
-      minlength: [2, "El nombre debe tener al menos 2 caracteres."],
       maxlength: [50, "El nombre no puede exceder los 50 caracteres."],
     },
     apellido: {
       type: String,
       required: [true, "El apellido es obligatorio."],
       trim: true,
-      minlength: [2, "El apellido debe tener al menos 2 caracteres."],
       maxlength: [50, "El apellido no puede exceder los 50 caracteres."],
     },
     correoElectronico: {
@@ -44,22 +42,27 @@ const DesafioInscripcionSchema = new mongoose.Schema(
     },
     // campo 'otraUnidad' ha sido ELIMINADO de este esquema
     desafioInteres: {
-      type: String,
-      required: [true, "El desafío de interés es obligatorio."],
-      enum: {
-        values: ["Desafío CMF", "Desafío NANOTC", "Desafío Abierto"],
-        message: "El desafío de interés no es válido.",
+      type: [String], // <--- AHORA ES UN ARRAY DE STRINGS
+      required: [true, "Debe seleccionar al menos un desafío."],
+      // Validator para asegurar que los strings en el array sean de las opciones válidas.
+      // Las opciones deben coincidir con las del frontend: "Desafío CMF", "Desafío NANOTC", "Desafío Abierto (Otro desafío en colaboración con la industria)"
+      validate: {
+        validator: function (v) {
+          const validOptions = [
+            "Desafío CMF",
+            "Desafío NANOTC",
+            "Desafío Abierto (Otro desafío en colaboración con la industria)",
+          ];
+          // Se asegura que 'v' sea un array, que no esté vacío y que todos sus elementos sean strings válidos
+          return (
+            Array.isArray(v) &&
+            v.length > 0 &&
+            v.every((val) => validOptions.includes(val))
+          );
+        },
+        message: (props) =>
+          `${props.value} contiene uno o más desafíos no válidos o el array está vacío.`,
       },
-      trim: true,
-    },
-    capacidadesDesafio: {
-      type: String,
-      required: [true, "La descripción de capacidades es obligatoria."],
-      trim: true,
-      maxlength: [
-        1000,
-        "La descripción de capacidades no puede exceder los 1000 caracteres.",
-      ],
     },
   },
   {
