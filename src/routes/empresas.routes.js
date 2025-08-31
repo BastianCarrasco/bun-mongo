@@ -163,19 +163,23 @@ const inscripcionesEmpresasRoutes = new Elysia({ prefix: "/empresas" })
         Validar: t.Optional(t.Boolean()),
         link: t.Optional(t.String()), // <--- AÑADIDO: link en el nivel raíz para PUT
         front: t.Optional(
+          // El objeto 'front' en sí es opcional
           t.Object({
+            // Si 'front' existe, debe ser un objeto con...
             contexto: t.Optional(t.String()),
             extra: t.Optional(
+              // 'extra' es opcional
               t.Object({
+                // Si 'extra' existe, debe ser un objeto con...
                 titulo: t.Optional(t.String()),
                 datos: t.Optional(t.Array(t.String())),
-                // ELIMINADO: link ya no está dentro de 'extra'
-                // link: t.Optional(t.String()),
               })
             ),
             desafio_Texto: t.Optional(t.String()),
             desafio_1: t.Optional(
+              // 'desafio_1' es opcional
               t.Object({
+                // Si 'desafio_1' existe, debe ser un objeto con...
                 titulo: t.Optional(t.String()),
                 descripcion: t.Optional(t.String()),
               })
@@ -192,8 +196,6 @@ const inscripcionesEmpresasRoutes = new Elysia({ prefix: "/empresas" })
                 descripcion: t.Optional(t.String()),
               })
             ),
-            // ELIMINADO: link ya no está directamente dentro de 'front'
-            // link: t.Optional(t.String()),
           })
         ),
       }),
