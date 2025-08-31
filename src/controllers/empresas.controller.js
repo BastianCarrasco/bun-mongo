@@ -141,7 +141,7 @@ export const deleteInscripcionEmpresa = async (id, set) => {
 export const getDesafioEmpresas = async (set) => {
   try {
     const inscripciones = await EmpresaInscripcion.find(
-      { Validar: true },
+      {},
       {
         _id: 1,
         empresaOrganizacion: 1,
