@@ -136,28 +136,27 @@ export const deleteInscripcionEmpresa = async (id, set) => {
 export const getDesafioEmpresas = async (set) => {
   try {
     const inscripciones = await EmpresaInscripcion.find(
-      { Validar: true }, // <-- ¡CAMBIO CLAVE AQUÍ!
+      { Validar: true },
       {
-        empresaOrganizacion: 1, // Incluir el nombre de la empresa/organización
-        actividadesServicios: 1, // Agregado previamente
-        front: 1, // Incluir el objeto 'front' completo
-        _id: 0, // Excluir el ID del documento
+        _id: 1,
+        empresaOrganizacion: 1,
+        actividadesServicios: 1,
+        front: 1,
       }
     );
 
-    // Mapear para asegurar que el 'link' de 'front' se extraiga
-    // y para que la estructura devuelta sea consistente.
     const dataConFrontInfo = inscripciones.map((inscripcion) => {
       return {
+        _id: inscripcion._id.toString(), // <-- ¡CAMBIO AQUÍ!
         empresaOrganizacion: inscripcion.empresaOrganizacion,
         actividadesServicios: inscripcion.actividadesServicios,
-        front: inscripcion.front, // Objeto front completo (contiene desafio_1, _2, _3, link, etc.)
-        link: inscripcion.front?.link, // Vuelve a ser directamente front.link
+        front: inscripcion.front,
+        link: inscripcion.front?.link,
       };
     });
 
     set.status = 200;
-    return dataConFrontInfo; // Retorna directamente el array
+    return dataConFrontInfo;
   } catch (error) {
     console.error("Error al obtener información específica:", error);
     set.status = 500;

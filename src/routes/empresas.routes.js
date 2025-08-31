@@ -244,14 +244,17 @@ const inscripcionesEmpresasRoutes = new Elysia({ prefix: "/empresas" })
     response: {
       200: t.Array(
         t.Object({
+          _id: t.Any(),
           empresaOrganizacion: t.String(),
-          actividadesServicios: t.Optional(t.String()), // <-- ¡AGREGADO AQUÍ! Puede ser opcional si el esquema lo permite
+          actividadesServicios: t.Optional(t.String()),
           front: t.Object({
             contexto: t.Optional(t.String()),
             extra: t.Optional(
               t.Object({
                 titulo: t.Optional(t.String()),
                 datos: t.Optional(t.Array(t.String())),
+                // Si `link` también puede estar dentro de `extra`, mantenlo aquí.
+                // De lo contrario, si solo está en el nivel superior de `front`, puedes eliminarlo de `extra`.
                 link: t.Optional(t.String()),
               })
             ),
@@ -274,7 +277,10 @@ const inscripcionesEmpresasRoutes = new Elysia({ prefix: "/empresas" })
                 descripcion: t.Optional(t.String()),
               })
             ),
+            // ¡AGREGA ESTO! Si front.link es un campo directo de 'front'
+            link: t.Optional(t.String()),
           }),
+          // Este `link` de nivel superior ya está bien si quieres redundancia o una referencia directa
           link: t.Optional(t.String()),
         })
       ),
