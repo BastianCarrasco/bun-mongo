@@ -17,12 +17,12 @@ const inscripcionesEmpresasRoutes = new Elysia({ prefix: "/empresas" })
       body: t.Object({
         nombre: t.Optional(t.String()),
         apellido: t.Optional(t.String()),
-        // CAMBIO AQUÍ: Eliminar format: "email" para permitir cadena vacía
+        // CAMBIO AQUÍ: Eliminar format: "email" para permitir cadena vacía, y opcional
         correoElectronico: t.Optional(t.String()),
         numeroTelefono: t.Optional(t.String()),
         empresaOrganizacion: t.Optional(t.String()),
         areaTrabajo: t.Optional(t.Array(t.String())),
-        // CAMBIO AQUÍ: Eliminar format: "uri" para permitir cadena vacía
+        // CAMBIO AQUÍ: Eliminar format: "uri" para permitir cadena vacía, y opcional
         contactoWeb: t.Optional(t.String()),
         vinculoPUCV: t.Optional(t.Array(t.String())),
         actividadesServicios: t.Optional(t.String()),
@@ -31,6 +31,7 @@ const inscripcionesEmpresasRoutes = new Elysia({ prefix: "/empresas" })
         desafio3: t.Optional(t.String()),
         interesInformacion: t.Optional(t.Boolean()),
         Validar: t.Optional(t.Boolean()),
+        link: t.Optional(t.String()), // <--- AÑADIDO: link en el nivel raíz para POST
         front: t.Optional(
           t.Object({
             contexto: t.Optional(t.String()),
@@ -38,7 +39,8 @@ const inscripcionesEmpresasRoutes = new Elysia({ prefix: "/empresas" })
               t.Object({
                 titulo: t.Optional(t.String()),
                 datos: t.Optional(t.Array(t.String())),
-                link: t.Optional(t.String()),
+                // ELIMINADO: link ya no está dentro de 'extra'
+                // link: t.Optional(t.String()),
               })
             ),
             desafio_Texto: t.Optional(t.String()),
@@ -60,6 +62,8 @@ const inscripcionesEmpresasRoutes = new Elysia({ prefix: "/empresas" })
                 descripcion: t.Optional(t.String()),
               })
             ),
+            // ELIMINADO: link ya no está directamente dentro de 'front'
+            // link: t.Optional(t.String()),
           })
         ),
       }),
@@ -87,7 +91,6 @@ const inscripcionesEmpresasRoutes = new Elysia({ prefix: "/empresas" })
       },
     }
   )
-  // ... (el resto de tus rutas GET, PUT, DELETE, /desafios siguen igual) ...
   .get("/inscripciones", async ({ set }) => getAllInscripcionesEmpresas(set), {
     detail: {
       tags: ["Empresas"],
@@ -95,6 +98,9 @@ const inscripcionesEmpresasRoutes = new Elysia({ prefix: "/empresas" })
       description:
         "Recupera una lista de todas las empresas y organizaciones inscritas en la plataforma.",
     },
+    // Nota: 't.Array(t.Any())' es muy permisivo. Para producción, sería bueno
+    // definir un esquema más específico aquí también si getAllInscripcionesEmpresas
+    // devuelve la estructura completa del modelo.
     response: {
       200: t.Array(t.Any()),
       500: t.Object({
@@ -115,6 +121,7 @@ const inscripcionesEmpresasRoutes = new Elysia({ prefix: "/empresas" })
         description:
           "Recupera los detalles de una empresa inscrita utilizando su ID único.",
       },
+      // De nuevo, 't.Any()' es permisivo.
       response: {
         200: t.Any(),
         400: t.Object({
@@ -140,11 +147,13 @@ const inscripcionesEmpresasRoutes = new Elysia({ prefix: "/empresas" })
       body: t.Object({
         nombre: t.Optional(t.String()),
         apellido: t.Optional(t.String()),
-        correoElectronico: t.Optional(t.String({ format: "email" })),
+        // CAMBIO AQUÍ: Eliminar format: "email" si quieres permitir cadena vacía
+        correoElectronico: t.Optional(t.String()),
         numeroTelefono: t.Optional(t.String()),
         empresaOrganizacion: t.Optional(t.String()),
         areaTrabajo: t.Optional(t.Array(t.String())),
-        contactoWeb: t.Optional(t.String({ format: "uri" })),
+        // CAMBIO AQUÍ: Eliminar format: "uri" si quieres permitir cadena vacía
+        contactoWeb: t.Optional(t.String()),
         vinculoPUCV: t.Optional(t.Array(t.String())),
         actividadesServicios: t.Optional(t.String()),
         desafio1: t.Optional(t.String()),
@@ -152,6 +161,7 @@ const inscripcionesEmpresasRoutes = new Elysia({ prefix: "/empresas" })
         desafio3: t.Optional(t.String()),
         interesInformacion: t.Optional(t.Boolean()),
         Validar: t.Optional(t.Boolean()),
+        link: t.Optional(t.String()), // <--- AÑADIDO: link en el nivel raíz para PUT
         front: t.Optional(
           t.Object({
             contexto: t.Optional(t.String()),
@@ -159,7 +169,8 @@ const inscripcionesEmpresasRoutes = new Elysia({ prefix: "/empresas" })
               t.Object({
                 titulo: t.Optional(t.String()),
                 datos: t.Optional(t.Array(t.String())),
-                link: t.Optional(t.String()), // Sin formato URI estricto para permitir vacío
+                // ELIMINADO: link ya no está dentro de 'extra'
+                // link: t.Optional(t.String()),
               })
             ),
             desafio_Texto: t.Optional(t.String()),
@@ -181,6 +192,8 @@ const inscripcionesEmpresasRoutes = new Elysia({ prefix: "/empresas" })
                 descripcion: t.Optional(t.String()),
               })
             ),
+            // ELIMINADO: link ya no está directamente dentro de 'front'
+            // link: t.Optional(t.String()),
           })
         ),
       }),
@@ -239,12 +252,12 @@ const inscripcionesEmpresasRoutes = new Elysia({ prefix: "/empresas" })
       tags: ["Empresas"],
       summary: "Obtener información de desafíos y front de todas las empresas",
       description:
-        "Recupera la organización, el objeto 'front' completo y el link directo de 'front' de todas las empresas inscritas.",
+        "Recupera la organización, el objeto 'front' completo y el link de nivel raíz de todas las empresas inscritas que estén validadas.",
     },
     response: {
       200: t.Array(
         t.Object({
-          _id: t.Any(),
+          _id: t.Any(), // Considera t.String() si siempre lo conviertes.
           empresaOrganizacion: t.String(),
           actividadesServicios: t.Optional(t.String()),
           front: t.Object({
@@ -253,9 +266,8 @@ const inscripcionesEmpresasRoutes = new Elysia({ prefix: "/empresas" })
               t.Object({
                 titulo: t.Optional(t.String()),
                 datos: t.Optional(t.Array(t.String())),
-                // Si `link` también puede estar dentro de `extra`, mantenlo aquí.
-                // De lo contrario, si solo está en el nivel superior de `front`, puedes eliminarlo de `extra`.
-                link: t.Optional(t.String()),
+                // ELIMINADO: link ya no está dentro de 'extra'
+                // link: t.Optional(t.String()),
               })
             ),
             desafio_Texto: t.Optional(t.String()),
@@ -277,11 +289,11 @@ const inscripcionesEmpresasRoutes = new Elysia({ prefix: "/empresas" })
                 descripcion: t.Optional(t.String()),
               })
             ),
-            // ¡AGREGA ESTO! Si front.link es un campo directo de 'front'
-            link: t.Optional(t.String()),
+            // ELIMINADO: link ya no está directamente dentro de 'front'
+            // link: t.Optional(t.String()),
           }),
-          // Este `link` de nivel superior ya está bien si quieres redundancia o una referencia directa
-          link: t.Optional(t.String()),
+          link: t.Optional(t.String()), // <--- CORRECTO: link en el nivel raíz
+          Validar: t.Boolean(),
         })
       ),
       500: t.Object({

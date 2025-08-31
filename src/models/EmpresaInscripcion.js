@@ -4,141 +4,136 @@ const EmpresaInscripcionSchema = new mongoose.Schema(
   {
     nombre: {
       type: String,
-      // required: true, // ELIMINADO
       trim: true,
-      default: "", // Asegura que siempre tenga un valor por defecto si no se proporciona
+      default: "",
     },
     apellido: {
       type: String,
-      // required: true, // ELIMINADO
       trim: true,
-      default: "", // Asegura que siempre tenga un valor por defecto
+      default: "",
     },
     correoElectronico: {
       type: String,
-      // required: true, // ELIMINADO
-      // unique: true, // Considera si `unique` tiene sentido si el campo puede estar vacío. Mongoose maneja los vacíos como únicos si hay varios. Si puede haber muchos vacíos, quita `unique`.
       trim: true,
       lowercase: true,
       match: [/\S+@\S+\.\S+/, "Por favor, use un correo electrónico válido"],
-      default: "", // Asegura que siempre tenga un valor por defecto
+      default: "",
     },
     numeroTelefono: {
       type: String,
-      // required: true, // ELIMINADO
       trim: true,
-      default: "", // Asegura que siempre tenga un valor por defecto
+      default: "",
     },
     empresaOrganizacion: {
       type: String,
-      // required: true, // ELIMINADO
       trim: true,
-      default: "", // Asegura que siempre tenga un valor por defecto
+      default: "",
     },
     areaTrabajo: {
       type: [String],
-      // required: true, // ELIMINADO
-      default: [], // Asegura que siempre sea un array por defecto
+      default: [],
     },
     contactoWeb: {
       type: String,
-      // required: true, // ELIMINADO
       trim: true,
-      default: "", // Asegura que siempre tenga un valor por defecto
+      default: "",
     },
     vinculoPUCV: {
       type: [String],
-      default: [], // Ya tiene default, bueno para no ser obligatorio
+      default: [],
     },
     actividadesServicios: {
       type: String,
       trim: true,
-      default: "", // Ya tiene default
+      default: "",
     },
     desafio1: {
       type: String,
       trim: true,
-      default: "", // Ya tiene default
+      default: "",
     },
     desafio2: {
       type: String,
       trim: true,
-      default: "", // Ya tiene default
+      default: "",
     },
     desafio3: {
       type: String,
       trim: true,
-      default: "", // Ya tiene default
+      default: "",
     },
     interesInformacion: {
       type: Boolean,
-      default: false, // Ya tiene default
+      default: false,
     },
     Validar: {
       type: Boolean,
-      default: false, // Ya tiene default
+      default: false,
+    },
+    // <--- MOVIDO AQUÍ: link en el nivel raíz del esquema
+    link: {
+      type: String,
+      trim: true,
+      default: "",
     },
     front: {
       contexto: {
         type: String,
         trim: true,
-        default: "", // Ya tiene default
+        default: "",
       },
       extra: {
         titulo: {
           type: String,
           trim: true,
-          default: "", // Ya tiene default
+          default: "",
         },
         datos: {
           type: [String],
-          default: [], // Ya tiene default
+          default: [],
         },
+        // ELIMINADO: link ya no está dentro de 'extra'
       },
-      link: {
-        type: String,
-        trim: true,
-        default: "", // Ya tiene default
-      },
+      // ELIMINADO: link ya no está directamente dentro de 'front'
       desafio_Texto: {
         type: String,
         trim: true,
-        default: "", // Ya tiene default
+        default: "",
       },
       desafio_1: {
         titulo: {
           type: String,
           trim: true,
-          default: "", // Ya tiene default
+          default: "",
         },
         descripcion: {
           type: String,
           trim: true,
-          default: "", // Ya tiene default
+          default: "",
         },
       },
       desafio_2: {
         titulo: {
           type: String,
           trim: true,
-          default: "", // Ya tiene default
+          default: "",
         },
         descripcion: {
           type: String,
           trim: true,
-          default: "", // Ya tiene default
+          default: "",
         },
       },
       desafio_3: {
         titulo: {
           type: String,
           trim: true,
-          default: "", // Ya tiene default
+          default: "",
         },
         descripcion: {
           type: String,
           trim: true,
-          default: "", // Ya tiene default
+          default: "",
         },
       },
     },

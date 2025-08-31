@@ -3,6 +3,9 @@ import EmpresaInscripcion from "../models/EmpresaInscripcion.js";
 // CREATE: Crear una nueva inscripción de empresa
 export const createInscripcionEmpresa = async (body, set) => {
   try {
+    // Cuando creamos una nueva inscripción, si el 'link' viene en el body,
+    // Mongoose lo mapeará correctamente al campo 'link' de nivel raíz
+    // gracias a la actualización del esquema.
     const nuevaInscripcion = new EmpresaInscripcion(body);
     await nuevaInscripcion.save();
     set.status = 201; // Creado
@@ -13,14 +16,12 @@ export const createInscripcionEmpresa = async (body, set) => {
   } catch (error) {
     console.error("Error al guardar la inscripción:", error);
     if (error.code === 11000) {
-      // Error de duplicado (ej. correo electrónico único)
       set.status = 409; // Conflicto
       return {
         error: "El correo electrónico ya está registrado. Verifique sus datos.",
       };
     }
     if (error.name === "ValidationError") {
-      // Error de validación de Mongoose
       set.status = 400; // Petición incorrecta
       const errors = Object.keys(error.errors).map(
         (key) => error.errors[key].message
@@ -35,9 +36,10 @@ export const createInscripcionEmpresa = async (body, set) => {
 // READ ALL: Obtener todas las inscripciones de empresas
 export const getAllInscripcionesEmpresas = async (set) => {
   try {
+    // No necesita cambios, find() recuperará todos los campos, incluido 'link' en la raíz.
     const inscripciones = await EmpresaInscripcion.find();
     set.status = 200; // OK
-    return inscripciones; // <-- ¡Cambiado! Retorna el array directamente
+    return inscripciones;
   } catch (error) {
     console.error("Error al obtener inscripciones:", error);
     set.status = 500; // Error interno del servidor
@@ -50,13 +52,14 @@ export const getAllInscripcionesEmpresas = async (set) => {
 // READ ONE: Obtener una inscripción de empresa por ID
 export const getInscripcionEmpresaById = async (id, set) => {
   try {
+    // No necesita cambios, findById() recuperará todos los campos, incluido 'link' en la raíz.
     const inscripcion = await EmpresaInscripcion.findById(id);
     if (!inscripcion) {
       set.status = 404; // No encontrado
       return { error: "Inscripción de empresa no encontrada." };
     }
     set.status = 200; // OK
-    return inscripcion; // <-- ¡Cambiado! Retorna el objeto directamente
+    return inscripcion;
   } catch (error) {
     console.error(`Error al obtener inscripción con ID ${id}:`, error);
     if (error.name === "CastError") {
@@ -71,10 +74,12 @@ export const getInscripcionEmpresaById = async (id, set) => {
 // UPDATE: Actualizar una inscripción de empresa por ID
 export const updateInscripcionEmpresa = async (id, body, set) => {
   try {
+    // Si el 'link' viene en el 'body' de la actualización,
+    // findByIdAndUpdate lo aplicará correctamente al campo 'link' de nivel raíz.
     const inscripcionActualizada = await EmpresaInscripcion.findByIdAndUpdate(
       id,
       body,
-      { new: true, runValidators: true } // `new: true` devuelve el documento actualizado; `runValidators: true` ejecuta validaciones del esquema
+      { new: true, runValidators: true }
     );
 
     if (!inscripcionActualizada) {
@@ -82,7 +87,7 @@ export const updateInscripcionEmpresa = async (id, body, set) => {
       return { error: "Inscripción de empresa no encontrada para actualizar." };
     }
     set.status = 200; // OK
-    return inscripcionActualizada; // <-- ¡Cambiado! Retorna el objeto directamente
+    return inscripcionActualizada;
   } catch (error) {
     console.error(`Error al actualizar inscripción con ID ${id}:`, error);
     if (error.name === "CastError") {
@@ -90,14 +95,12 @@ export const updateInscripcionEmpresa = async (id, body, set) => {
       return { error: "ID de inscripción inválido." };
     }
     if (error.code === 11000) {
-      // Error de duplicado (ej. correo electrónico único)
       set.status = 409; // Conflicto
       return {
         error: "El correo electrónico ya está registrado. Verifique sus datos.",
       };
     }
     if (error.name === "ValidationError") {
-      // Error de validación de Mongoose
       set.status = 400; // Petición incorrecta
       const errors = Object.keys(error.errors).map(
         (key) => error.errors[key].message
@@ -114,14 +117,15 @@ export const updateInscripcionEmpresa = async (id, body, set) => {
 // DELETE: Eliminar una inscripción de empresa por ID
 export const deleteInscripcionEmpresa = async (id, set) => {
   try {
+    // No necesita cambios, findByIdAndDelete funciona con la estructura actual.
     const inscripcionEliminada = await EmpresaInscripcion.findByIdAndDelete(id);
 
     if (!inscripcionEliminada) {
       set.status = 404; // No encontrado
       return { error: "Inscripción de empresa no encontrada para eliminar." };
     }
-    set.status = 200; // OK (o 204 No Content si no se devuelve cuerpo)
-    return inscripcionEliminada; // <-- ¡Cambiado! Retorna el objeto directamente
+    set.status = 200; // OK
+    return inscripcionEliminada;
   } catch (error) {
     console.error(`Error al eliminar inscripción con ID ${id}:`, error);
     if (error.name === "CastError") {
@@ -133,6 +137,7 @@ export const deleteInscripcionEmpresa = async (id, set) => {
   }
 };
 
+// GET DESAFIO EMPRESAS (ya lo habíamos actualizado, solo para confirmar)
 export const getDesafioEmpresas = async (set) => {
   try {
     const inscripciones = await EmpresaInscripcion.find(
@@ -142,16 +147,19 @@ export const getDesafioEmpresas = async (set) => {
         empresaOrganizacion: 1,
         actividadesServicios: 1,
         front: 1,
+        link: 1, // <-- Asegura que 'link' de nivel raíz se proyecte
+        Validar: 1,
       }
     );
 
     const dataConFrontInfo = inscripciones.map((inscripcion) => {
       return {
-        _id: inscripcion._id.toString(), // <-- ¡CAMBIO AQUÍ!
+        _id: inscripcion._id.toString(),
         empresaOrganizacion: inscripcion.empresaOrganizacion,
         actividadesServicios: inscripcion.actividadesServicios,
         front: inscripcion.front,
-        link: inscripcion.front?.link,
+        link: inscripcion.link, // <-- Accede a 'link' de nivel raíz
+        Validar: inscripcion.Validar,
       };
     });
 
