@@ -2,11 +2,10 @@ import mongoose from "mongoose";
 import "dotenv/config";
 
 const mongoURI: string =
-  process.env.MONGO_URI || "mongodb://localhost:27017/test_default_db";
+  process.env.MONGO_PUBLIC_URL || "mongodb://localhost:27017/test_default_db";
 const dbName: string = process.env.DB_NAME || "default_db_name";
 
 export async function connectDB() {
-
   try {
     console.log(`Intentando conectar a MongoDB en: ${mongoURI}`);
     console.log(`Usando la base de datos: ${dbName}`);
