@@ -144,7 +144,7 @@ export const getDesafioEmpresas = async (set) => {
       {},
       {
         _id: 1,
-        empresaOrganizacion: 1,
+        nombreEmpresa: 1,
         actividadesServicios: 1,
         front: 1,
         link: 1, // <-- Asegura que 'link' de nivel raíz se proyecte
@@ -155,7 +155,7 @@ export const getDesafioEmpresas = async (set) => {
     const dataConFrontInfo = inscripciones.map((inscripcion) => {
       return {
         _id: inscripcion._id.toString(),
-        empresaOrganizacion: inscripcion.empresaOrganizacion,
+        nombreEmpresa: inscripcion.nombreEmpresa,
         actividadesServicios: inscripcion.actividadesServicios,
         front: inscripcion.front,
         link: inscripcion.link, // <-- Accede a 'link' de nivel raíz

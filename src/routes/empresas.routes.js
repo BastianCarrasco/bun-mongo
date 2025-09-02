@@ -20,7 +20,7 @@ const inscripcionesEmpresasRoutes = new Elysia({ prefix: "/empresas" })
         // CAMBIO AQUÍ: Eliminar format: "email" para permitir cadena vacía, y opcional
         correoElectronico: t.Optional(t.String()),
         numeroTelefono: t.Optional(t.String()),
-        empresaOrganizacion: t.Optional(t.String()),
+        nombreEmpresa: t.Optional(t.String()),
         areaTrabajo: t.Optional(t.Array(t.String())),
         // CAMBIO AQUÍ: Eliminar format: "uri" para permitir cadena vacía, y opcional
         contactoWeb: t.Optional(t.String()),
@@ -150,7 +150,7 @@ const inscripcionesEmpresasRoutes = new Elysia({ prefix: "/empresas" })
         // CAMBIO AQUÍ: Eliminar format: "email" si quieres permitir cadena vacía
         correoElectronico: t.Optional(t.String()),
         numeroTelefono: t.Optional(t.String()),
-        empresaOrganizacion: t.Optional(t.String()),
+        nombreEmpresa: t.Optional(t.String()),
         areaTrabajo: t.Optional(t.Array(t.String())),
         // CAMBIO AQUÍ: Eliminar format: "uri" si quieres permitir cadena vacía
         contactoWeb: t.Optional(t.String()),
@@ -260,7 +260,7 @@ const inscripcionesEmpresasRoutes = new Elysia({ prefix: "/empresas" })
       200: t.Array(
         t.Object({
           _id: t.Any(), // Considera t.String() si siempre lo conviertes.
-          empresaOrganizacion: t.String(),
+          nombreEmpresa: t.String(),
           actividadesServicios: t.Optional(t.String()),
           front: t.Object({
             contexto: t.Optional(t.String()),

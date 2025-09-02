@@ -24,7 +24,7 @@ const EmpresaInscripcionSchema = new mongoose.Schema(
       trim: true,
       default: "",
     },
-    empresaOrganizacion: {
+    nombreEmpresa: {
       type: String,
       trim: true,
       default: "",
