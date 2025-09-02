@@ -38,7 +38,7 @@ const EmpresaInscripcionSchema = new mongoose.Schema(
       trim: true,
       default: "",
     },
-    vinculoPUCV: {
+    vinculoPucv: {
       type: [String],
       default: [],
     },
@@ -66,7 +66,7 @@ const EmpresaInscripcionSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    Validar: {
+    validar: {
       type: Boolean,
       default: false,
     },
@@ -145,6 +145,6 @@ const EmpresaInscripcionSchema = new mongoose.Schema(
 
 const EmpresaInscripcion =
   mongoose.models.EmpresaInscripcion ||
-  mongoose.model("EmpresaInscripcion", EmpresaInscripcionSchema);
+  mongoose.model("empresas_desafios", EmpresaInscripcionSchema);
 
 export default EmpresaInscripcion;

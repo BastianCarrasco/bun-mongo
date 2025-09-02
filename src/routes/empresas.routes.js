@@ -24,13 +24,13 @@ const inscripcionesEmpresasRoutes = new Elysia({ prefix: "/empresas" })
         areaTrabajo: t.Optional(t.Array(t.String())),
         // CAMBIO AQUÍ: Eliminar format: "uri" para permitir cadena vacía, y opcional
         contactoWeb: t.Optional(t.String()),
-        vinculoPUCV: t.Optional(t.Array(t.String())),
+        vinculoPucv: t.Optional(t.Array(t.String())),
         actividadesServicios: t.Optional(t.String()),
         desafio1: t.Optional(t.String()),
         desafio2: t.Optional(t.String()),
         desafio3: t.Optional(t.String()),
         interesInformacion: t.Optional(t.Boolean()),
-        Validar: t.Optional(t.Boolean()),
+        validar: t.Optional(t.Boolean()),
         link: t.Optional(t.String()), // <--- AÑADIDO: link en el nivel raíz para POST
         front: t.Optional(
           t.Object({
@@ -154,13 +154,13 @@ const inscripcionesEmpresasRoutes = new Elysia({ prefix: "/empresas" })
         areaTrabajo: t.Optional(t.Array(t.String())),
         // CAMBIO AQUÍ: Eliminar format: "uri" si quieres permitir cadena vacía
         contactoWeb: t.Optional(t.String()),
-        vinculoPUCV: t.Optional(t.Array(t.String())),
+        vinculoPucv: t.Optional(t.Array(t.String())),
         actividadesServicios: t.Optional(t.String()),
         desafio1: t.Optional(t.String()),
         desafio2: t.Optional(t.String()),
         desafio3: t.Optional(t.String()),
         interesInformacion: t.Optional(t.Boolean()),
-        Validar: t.Optional(t.Boolean()),
+        validar: t.Optional(t.Boolean()),
         link: t.Optional(t.String()), // <--- AÑADIDO: link en el nivel raíz para PUT
         front: t.Optional(
           // El objeto 'front' en sí es opcional
@@ -295,7 +295,7 @@ const inscripcionesEmpresasRoutes = new Elysia({ prefix: "/empresas" })
             // link: t.Optional(t.String()),
           }),
           link: t.Optional(t.String()), // <--- CORRECTO: link en el nivel raíz
-          Validar: t.Boolean(),
+          validar: t.Boolean(),
         })
       ),
       500: t.Object({

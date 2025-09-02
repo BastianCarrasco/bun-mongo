@@ -148,7 +148,7 @@ export const getDesafioEmpresas = async (set) => {
         actividadesServicios: 1,
         front: 1,
         link: 1, // <-- Asegura que 'link' de nivel raíz se proyecte
-        Validar: 1,
+        validar: 1,
       }
     );
 
@@ -159,7 +159,7 @@ export const getDesafioEmpresas = async (set) => {
         actividadesServicios: inscripcion.actividadesServicios,
         front: inscripcion.front,
         link: inscripcion.link, // <-- Accede a 'link' de nivel raíz
-        Validar: inscripcion.Validar,
+        validar: inscripcion.validar,
       };
     });
 
