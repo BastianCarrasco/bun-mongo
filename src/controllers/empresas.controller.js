@@ -138,39 +138,40 @@ export const deleteInscripcionEmpresa = async (id, set) => {
 };
 
 // GET DESAFIO EMPRESAS (ya lo habíamos actualizado, solo para confirmar)
-export const getDesafioEmpresas = async (set) => {
+export const getDesafioEmpresas = async () => {
+  // Ya no recibimos 'set' aquí
   try {
     const inscripciones = await EmpresaInscripcion.find(
-      {},
+      { validado: true },
       {
         _id: 1,
         nombreEmpresa: 1,
         actividadesServicios: 1,
         front: 1,
-        link: 1, // <-- Asegura que 'link' de nivel raíz se proyecte
-        validado: 1,
+        link: 1, // Asegura que 'link' de nivel raíz se proyecte
       }
     );
 
     const dataConFrontInfo = inscripciones.map((inscripcion) => {
+      // Asegurarse de que `inscripcion.front` siempre sea un objeto para el esquema
+      // Aunque en el tipo de Elysia se permite Optional, al mapear, es bueno asegurar.
+      // Si el `front` no existe, se retornará `undefined` aquí, lo cual es compatible con `t.Optional(t.Object(...))`.
       return {
         _id: inscripcion._id.toString(),
         nombreEmpresa: inscripcion.nombreEmpresa,
         actividadesServicios: inscripcion.actividadesServicios,
-        front: inscripcion.front,
-        link: inscripcion.link, // <-- Accede a 'link' de nivel raíz
-        validado: inscripcion.validado,
+        front: inscripcion.front, // Accede al objeto 'front' completo
+        link: inscripcion.link, // Accede a 'link' de nivel raíz
+        validado: true, // Sabemos que son validados por la consulta
       };
     });
 
-    set.status = 200;
-    return dataConFrontInfo;
+    return dataConFrontInfo; // Solo retorna el arreglo
   } catch (error) {
     console.error("Error al obtener información específica:", error);
-    set.status = 500;
-    return {
-      error:
-        "Error interno del servidor al obtener la información específica de empresas.",
-    };
+    // Lanza el error para que Elysia lo capture en la ruta
+    throw new Error(
+      "Error interno del servidor al obtener la información específica de empresas."
+    );
   }
 };

@@ -249,59 +249,76 @@ const inscripcionesEmpresasRoutes = new Elysia({ prefix: "/empresas" })
       },
     }
   )
-  .get("/empresas-desafios-ON", async ({ set }) => getDesafioEmpresas(set), {
-    detail: {
-      tags: ["Empresas"],
-      summary: "Obtener información de desafíos y front de todas las empresas",
-      description:
-        "Recupera la organización, el objeto 'front' completo y el link de nivel raíz de todas las empresas inscritas que estén validadas.",
+  .get(
+    "/desafios/validados",
+    async ({ set }) => {
+      try {
+        const data = await getDesafioEmpresas(); // Llama a la función sin 'set'
+        set.status = 200;
+        return data; // Retorna directamente el arreglo
+      } catch (error) {
+        console.error("Error en la ruta /desafios/validados:", error);
+        set.status = 500;
+        return {
+          error:
+            "Error interno del servidor al obtener la información específica de empresas.",
+        };
+      }
     },
-    response: {
-      200: t.Array(
-        t.Object({
-          _id: t.Any(), // Considera t.String() si siempre lo conviertes.
-          nombreEmpresa: t.String(),
-          actividadesServicios: t.Optional(t.String()),
-          front: t.Object({
-            contexto: t.Optional(t.String()),
-            extra: t.Optional(
+    {
+      detail: {
+        tags: ["Empresas"],
+        summary:
+          "Obtener información de desafíos y front de todas las empresas",
+        description:
+          "Recupera la organización, el objeto 'front' completo y el link de nivel raíz de todas las empresas inscritas que estén validadas.",
+      },
+      response: {
+        200: t.Array(
+          t.Object({
+            _id: t.String(), // Ahora es más seguro poner t.String() ya que lo conviertes
+            nombreEmpresa: t.String(),
+            actividadesServicios: t.Optional(t.String()),
+            front: t.Optional(
+              // front también podría ser opcional si no todas las empresas lo tienen
               t.Object({
-                titulo: t.Optional(t.String()),
-                datos: t.Optional(t.Array(t.String())),
-                // ELIMINADO: link ya no está dentro de 'extra'
-                // link: t.Optional(t.String()),
+                contexto: t.Optional(t.String()),
+                extra: t.Optional(
+                  t.Object({
+                    titulo: t.Optional(t.String()),
+                    datos: t.Optional(t.Array(t.String())),
+                  })
+                ),
+                desafio_Texto: t.Optional(t.String()),
+                desafio_1: t.Optional(
+                  t.Object({
+                    titulo: t.Optional(t.String()),
+                    descripcion: t.Optional(t.String()),
+                  })
+                ),
+                desafio_2: t.Optional(
+                  t.Object({
+                    titulo: t.Optional(t.String()),
+                    descripcion: t.Optional(t.String()),
+                  })
+                ),
+                desafio_3: t.Optional(
+                  t.Object({
+                    titulo: t.Optional(t.String()),
+                    descripcion: t.Optional(t.String()),
+                  })
+                ),
               })
             ),
-            desafio_Texto: t.Optional(t.String()),
-            desafio_1: t.Optional(
-              t.Object({
-                titulo: t.Optional(t.String()),
-                descripcion: t.Optional(t.String()),
-              })
-            ),
-            desafio_2: t.Optional(
-              t.Object({
-                titulo: t.Optional(t.String()),
-                descripcion: t.Optional(t.String()),
-              })
-            ),
-            desafio_3: t.Optional(
-              t.Object({
-                titulo: t.Optional(t.String()),
-                descripcion: t.Optional(t.String()),
-              })
-            ),
-            // ELIMINADO: link ya no está directamente dentro de 'front'
-            // link: t.Optional(t.String()),
-          }),
-          link: t.Optional(t.String()), // <--- CORRECTO: link en el nivel raíz
-          validado: t.Boolean(),
-        })
-      ),
-      500: t.Object({
-        error: t.String(),
-      }),
-    },
-  });
+            link: t.Optional(t.String()),
+            validado: t.Boolean(),
+          })
+        ),
+        500: t.Object({
+          error: t.String(),
+        }),
+      },
+    }
+  );
 
 export default inscripcionesEmpresasRoutes;
