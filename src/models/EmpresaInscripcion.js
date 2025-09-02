@@ -62,11 +62,11 @@ const EmpresaInscripcionSchema = new mongoose.Schema(
       trim: true,
       default: "",
     },
-    interesInformacion: {
+    masInformacion: {
       type: Boolean,
       default: false,
     },
-    validar: {
+    validado: {
       type: Boolean,
       default: false,
     },

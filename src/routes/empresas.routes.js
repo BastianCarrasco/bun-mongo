@@ -29,8 +29,8 @@ const inscripcionesEmpresasRoutes = new Elysia({ prefix: "/empresas" })
         desafio1: t.Optional(t.String()),
         desafio2: t.Optional(t.String()),
         desafio3: t.Optional(t.String()),
-        interesInformacion: t.Optional(t.Boolean()),
-        validar: t.Optional(t.Boolean()),
+        masInformacion: t.Optional(t.Boolean()),
+        validado: t.Optional(t.Boolean()),
         link: t.Optional(t.String()), // <--- AÑADIDO: link en el nivel raíz para POST
         front: t.Optional(
           t.Object({
@@ -159,8 +159,8 @@ const inscripcionesEmpresasRoutes = new Elysia({ prefix: "/empresas" })
         desafio1: t.Optional(t.String()),
         desafio2: t.Optional(t.String()),
         desafio3: t.Optional(t.String()),
-        interesInformacion: t.Optional(t.Boolean()),
-        validar: t.Optional(t.Boolean()),
+        masInformacion: t.Optional(t.Boolean()),
+        validado: t.Optional(t.Boolean()),
         link: t.Optional(t.String()), // <--- AÑADIDO: link en el nivel raíz para PUT
         front: t.Optional(
           // El objeto 'front' en sí es opcional
@@ -295,7 +295,7 @@ const inscripcionesEmpresasRoutes = new Elysia({ prefix: "/empresas" })
             // link: t.Optional(t.String()),
           }),
           link: t.Optional(t.String()), // <--- CORRECTO: link en el nivel raíz
-          validar: t.Boolean(),
+          validado: t.Boolean(),
         })
       ),
       500: t.Object({

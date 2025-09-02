@@ -36,7 +36,8 @@ app.use(
         }, // ¡NUEVO TAG!
         {
           name: "Desafíos",
-          description: "Operaciones relacionadas con la inscripción de desafíos.",
+          description:
+            "Operaciones relacionadas con la inscripción de desafíos.",
         },
       ],
     },
@@ -51,8 +52,8 @@ app.use(
   new Elysia({ prefix: "/api" }) // Todas las rutas definidas DENTRO de este `use` tendrán el prefijo /api
 
     .use(inscripcionesEmpresasRoutes) // Monta las rutas de empresas (serán /api/empresas/...)
-    .use(inscripcionesAcademicosRoutes)
-    .use(inscripcionesDesafiosRoutes)
+  // .use(inscripcionesAcademicosRoutes)
+  // .use(inscripcionesDesafiosRoutes)
 );
 // --- FIN MODULARIZACIÓN ---
 
