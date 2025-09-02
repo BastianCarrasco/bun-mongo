@@ -11,7 +11,7 @@ import {
 
 const inscripcionesEmpresasRoutes = new Elysia({ prefix: "/empresas" })
   .post(
-    "/inscripcion",
+    "desafios/inscripcion",
     async ({ body, set }) => createInscripcionEmpresa(body, set),
     {
       body: t.Object({
@@ -69,7 +69,7 @@ const inscripcionesEmpresasRoutes = new Elysia({ prefix: "/empresas" })
       }),
       detail: {
         tags: ["Empresas"],
-        summary: "Inscribir una nueva empresa u organización",
+        summary: "Inscribir una nueva empresa u organización y sus desafios",
         description:
           "Registra los datos de contacto y desafíos de una empresa interesada en colaborar con la PUCV.",
       },
